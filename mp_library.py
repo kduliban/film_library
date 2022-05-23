@@ -41,6 +41,7 @@ class Series(MotionPicture):
         return f"Series({self.title}, {self.year}, {self.genre}, {self.time_played}, S{self.season_numb}, E{self.episode_numb})"
 
 
+        
 def get_movies():
     m_list = []
     for obj in MotionPicture.mp_library:
@@ -71,38 +72,55 @@ def search(ask_title = None):
             print(obj.title)
             break
 
+def ten_times(func):
+    def wrapper():
+        for i in range(10):
+            func()
+    return wrapper
 
+
+@ten_times
 def generate_views():
     obj = random.choice(MotionPicture.mp_library)
     obj.time_played += random.randint(1,100)
 
-def gen_views_10():
-    for i in range(10):
-        generate_views()
+def msg_top(func):
+    intro = 'Biblioteka filmów'
+    print(intro)
+    x = datetime.datetime.now()
+    date = f'{x.day}.{x.month}.{x.year}'
+    best = f'Najpopularniejsze filmy i seriale dnia {date}'
+    print(best)
 
-def top_titles(how_many):
-    for obj in MotionPicture.mp_library:
-        top = []
-        top.append(obj)
-        top = sorted(MotionPicture.mp_library, key= lambda obj: obj.time_played, reverse= True)[:(how_many)] 
-    for _ in top:
-        print(_)
-# def top_titles(how_many, content_type=None):
-#     #how_many = int(input('How many: '))
-#     content_type = input('Do you want popular (m)ovies or (s)eries?: ')
-#     for obj in MotionPicture.mp_library:
-#         if isinstance(obj, Series) == True:
-#             top_series = []
-#             top_series.append(obj) 
-#             top_series = sorted(MotionPicture.mp_library, key= lambda obj: obj.time_played, reverse= True)[:(how_many)]
-#             print(top_series)
-#         elif isinstance(obj, Movie) == True:
-#             top_movies =[]
-#             top_movies.append(obj) 
-#             top_movies = sorted(MotionPicture.mp_library, key= lambda obj: obj.time_played, reverse= True)[:(how_many)]
-#             print(top_movies)
-#         else:
-#              print('Wrong input')
+
+def top_titles(how_many, content_type=None):
+    content_type = input('Do you want popular (m)ovies or (s)eries?: ')
+    top_movies = []
+    top_series = []
+    if content_type == 's':
+        for obj in MotionPicture.mp_library:
+            if isinstance(obj, Series) == True:
+                top_series.append(obj) 
+                top_series = sorted(top_series, key= lambda obj: obj.time_played, reverse= True)[:(how_many)]
+            else:
+                pass
+    elif content_type == 'm':
+        for obj in MotionPicture.mp_library:
+            if isinstance(obj, Movie) == True:
+                top_movies.append(obj) 
+                top_movies = sorted(top_movies, key= lambda obj: obj.time_played, reverse= True)[:(how_many)]
+            else:
+                pass
+    else: 
+        print('Wrong input')
+
+
+    if content_type == 's':
+        for s in top_series:
+            print(s)
+    else:
+        for m in top_movies:
+            print(m)
     
 
 def create_series():
@@ -125,15 +143,11 @@ def create_movie():
         m_title = Movie(title, year, genre, time_played) 
 
 
-intro = 'Biblioteka filmów'
-print(intro)
+
 create_movie()
 create_series()
-gen_views_10()
-x = datetime.datetime.now()
-date = f'{x.day}.{x.month}.{x.year}'
-best = f'Najpopularniejsze filmy i seriale dnia {date}'
-print(best)
+generate_views()
+msg_top()
 top_titles(3)
 
 
