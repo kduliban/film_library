@@ -41,7 +41,14 @@ class Series(MotionPicture):
         return f"Series({self.title}, {self.year}, {self.genre}, {self.time_played}, S{self.season_numb}, E{self.episode_numb})"
 
 
-        
+    def number_of_episodes(self, title):
+        ep_nb = 0
+        for obj in MotionPicture.mp_library:
+            if isinstance(obj, Series) == True and obj.title == title:
+                ep_nb += 1 
+        return ep_nb
+
+
 def get_movies():
     m_list = []
     for obj in MotionPicture.mp_library:
@@ -136,12 +143,11 @@ def create_movie():
         m_title = Movie(title, year, genre, time_played) 
 
 
+def add_full_series(title, year,  genre, time_played, season_numb, numb_of_eps_to_add):
+    for i in range (1, numb_of_eps_to_add+1):
+        episode_numb = i
+        si = Series(title, year,  genre, time_played, episode_numb, season_numb)
 
-create_movie()
-create_series()
-generate_views()
-msg_top()
-top_titles(3)
 
 
 
