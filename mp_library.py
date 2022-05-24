@@ -47,8 +47,6 @@ def get_movies():
     for obj in MotionPicture.mp_library:
         if isinstance(obj, Movie) == True:
             m_list.append(obj) 
-        else:
-            pass
     m_list = sorted(m_list, key= lambda obj: obj.title)
     return print(m_list)
 
@@ -58,8 +56,6 @@ def get_series():
     for obj in MotionPicture.mp_library:
         if isinstance(obj, Series) == True:
             s_list.append(obj) 
-        else:
-            pass
     s_list = sorted(s_list, key= lambda obj: obj.title)
     for ser in s_list:
         print(ser)
@@ -102,15 +98,12 @@ def top_titles(how_many, content_type=None):
             if isinstance(obj, Series) == True:
                 top_series.append(obj) 
                 top_series = sorted(top_series, key= lambda obj: obj.time_played, reverse= True)[:(how_many)]
-            else:
-                pass
+
     elif content_type == 'm':
         for obj in MotionPicture.mp_library:
             if isinstance(obj, Movie) == True:
                 top_movies.append(obj) 
                 top_movies = sorted(top_movies, key= lambda obj: obj.time_played, reverse= True)[:(how_many)]
-            else:
-                pass
     else: 
         print('Wrong input')
 
